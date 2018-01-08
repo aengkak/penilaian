@@ -1,0 +1,12 @@
+<table border="1">
+	<tr>
+		<th>Tanggal</th>
+		<th>Kesalahan</th>
+		<th>Keterangan</th>
+	</tr>
+    <tr>
+    <td>2018-01-03</td>
+    <td>Telat</td>
+	<td>telat</td>
+  </tr>
+</table>
