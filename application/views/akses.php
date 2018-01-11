@@ -78,146 +78,106 @@
 </div>
 <!-- /.modal -->
 <script type="text/javascript">
-   var table;
-   var simpan;
-   
-            $(document).ready(function() {
-                //datatables
-                table = $('#datatable').DataTable({
-   		//keys: true,
-                    "processing": true, //Feature control the processing indicator.
-                    "serverSide": true, //Feature control DataTables' server-side processing mode.
-                    "order": [], //Initial no order.
-                    // Load data for the table's content from an Ajax source
-                    "ajax": {
-                        "url": '<?php echo base_url('jsonakses'); ?>',
-                        "type": "POST"
-                    },
-                    //Set column definition initialisation properties.
-                    "columns": [
-                        {"data": "akses"},
-   			{"data": "action"}
-                    ],
-   
-                });
-   	//TableManageButtons.init();
-            });
-   
-   function tambah() {
-   simpan = 'tambah';
-   $('#form')[0].reset(); // reset form on modals
-   $('#myModal').modal('show'); // show bootstrap modal
-   $("#modalbody").load("modalakses/",function(data){
-        $("#modalbody").html(data);
-     });
-   /*$("#form").on('submit',(function(e) {
-   e.preventDefault();
-   $.ajax({
-          url: "<?php echo base_url();?>addakses",
-          type: "POST",
-          data:  new FormData(this),
-          contentType: false,
-          cache: false,
-          processData:false,
-          success: function(data)
-            {
-     $('#myModal').modal('hide');
-     swal("Sukses!", "", "success")
-              table.ajax.reload();
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                swal("Error", "", "error");
-            }
-         });
-   return false;
-   }));*/
-   }
-   function ganti(id) {
-    simpan = 'update';
-    $('#form')[0].reset(); // reset form on modals
-   $('#myModal').modal('show'); // show bootstrap modal
-   $("#modalbody").load("<?php echo base_url();?>editakses/"+id,function(data){
-        $("#modalbody").html(data);
-     });
-   /*$("#form").on('submit',(function(e) {
-   e.preventDefault();
-   $.ajax({
-          url: "<?php echo base_url();?>updateakses",
-          type: "POST",
-          data:  new FormData(this),
-          contentType: false,
-          cache: false,
-          processData:false,
-          success: function(data)
-            {
-     $('#myModal').modal('hide');
-     swal("Sukses!", "", "success")
-              table.ajax.reload();
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                swal("Error", "", "error");
-            }
-         });
-   }));*/
-   }
-   $("#form").on('submit',(function(e) {
-   e.preventDefault();
-   var url;
-      if(simpan == 'tambah')
-      {
-          url = "<?php echo base_url();?>addakses";
-      }
-      else
-      {
-        url = "<?php echo base_url();?>updateakses";
-      }
-   $.ajax({
-          url: url,
-          type: "POST",
-          data:  new FormData(this),
-          contentType: false,
-          cache: false,
-          processData:false,
-          success: function(data)
-            {
-     $('#myModal').modal('hide');
-     swal("Sukses!", "", "success")
-              table.ajax.reload();
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                swal("Error", "", "error");
-            }
-         });
-   return false;
-   }));
-   function hapus(id) {
-    swal({
-                title: "Yakin Menghapus?",
-                text: "Data akan dihapus",
-                type: "error",
-                showCancelButton: true,
-                confirmButtonClass: 'btn-danger waves-effect waves-light',
-                confirmButtonText: "Ya",
-                closeOnConfirm: false
-            }, function () {
-   	$.ajax({
-   		url : "<?php echo site_url('deleteakses')?>/"+id,
-   		type: "POST",
-   		dataType: "JSON",
-   		success: function(data)
-   		{
-   			table.ajax.reload();
-   		},
-   		error: function (jqXHR, textStatus, errorThrown)
-   		{
-   			swal("Error", "", "error");
-   		}
-   	});
-                swal("Sukses!", "", "success");
-            });
-   }
-        
+var table;
+var simpan;
+
+$(document).ready(function () {
+	//datatables
+	table = $('#datatable').DataTable({
+		//keys: true,
+		"processing": true, //Feature control the processing indicator.
+		"serverSide": true, //Feature control DataTables' server-side processing mode.
+		"order": [], //Initial no order.
+		// Load data for the table's content from an Ajax source
+		"ajax": {
+			"url": '<?php echo base_url('jsonakses '); ?>',
+			"type": "POST"
+		},
+		//Set column definition initialisation properties.
+		"columns": [{
+				"data": "akses"
+			},
+			{
+				"data": "action"
+			}
+		],
+
+	});
+	//TableManageButtons.init();
+});
+
+function tambah() {
+	simpan = 'tambah';
+	$('#form')[0].reset(); // reset form on modals
+	$('#myModal').modal({
+		backdrop: 'static',
+		keyboard: false
+	}, 'show'); // show bootstrap modal
+	$("#modalbody").load("modalakses/", function (data) {
+		$("#modalbody").html(data);
+	});
+}
+
+function ganti(id) {
+	simpan = 'update';
+	$('#form')[0].reset(); // reset form on modals
+	$('#myModal').modal({
+		backdrop: 'static',
+		keyboard: false
+	}, 'show'); // show bootstrap modal
+	$("#modalbody").load("<?php echo base_url();?>editakses/" + id, function (data) {
+		$("#modalbody").html(data);
+	});
+}
+$("#form").on('submit', (function (e) {
+	e.preventDefault();
+	var url;
+	if (simpan == 'tambah') {
+		url = "<?php echo base_url();?>addakses";
+	} else {
+		url = "<?php echo base_url();?>updateakses";
+	}
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: new FormData(this),
+		contentType: false,
+		cache: false,
+		processData: false,
+		success: function (data) {
+			$('#myModal').modal('hide');
+			swal("Sukses!", "", "success")
+			table.ajax.reload();
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			swal("Error", "", "error");
+		}
+	});
+	return false;
+}));
+
+function hapus(id) {
+	swal({
+		title: "Yakin Menghapus?",
+		text: "Data akan dihapus",
+		type: "error",
+		showCancelButton: true,
+		confirmButtonClass: 'btn-danger waves-effect waves-light',
+		confirmButtonText: "Ya",
+		closeOnConfirm: false
+	}, function () {
+		$.ajax({
+			url: "<?php echo site_url('deleteakses')?>/" + id,
+			type: "POST",
+			dataType: "JSON",
+			success: function (data) {
+				table.ajax.reload();
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				swal("Error", "", "error");
+			}
+		});
+		swal("Sukses!", "", "success");
+	});
+}
 </script>

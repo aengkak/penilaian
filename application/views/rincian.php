@@ -3,16 +3,16 @@
    display: none;
    }
    .ui-datepicker .ui-datepicker-title {
-	margin: 0 2.3em;
-	line-height: 1.8em;
-	text-align: center;
-	font-size:0.70em;
-}
-.ui-datepicker .ui-datepicker-title select {
-	font-size: 1em;
-	margin: 1px 0;
-	color : #000 !important;
-}
+   margin: 0 2.3em;
+   line-height: 1.8em;
+   text-align: center;
+   font-size:0.70em;
+   }
+   .ui-datepicker .ui-datepicker-title select {
+   font-size: 1em;
+   margin: 1px 0;
+   color : #000 !important;
+   }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -59,28 +59,40 @@
                      </ul>
                      <div class="tab-content">
                         <div class="tab-pane active" id="home1">
-								<div class="panel panel-color panel-primary">
-
-									<!-- Table -->
-									<table class="table">
-										<thead>
-											<tr>
-												<th><h4>Nama :</h4></th>
-												<th><h4><?php echo $karyawan->nama;?></h4></th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><h4>Email :</h4></td>
-												<td><h4><?php echo $karyawan->email;?></h4></td>
-											</tr>
-											<tr>
-												<td><h4>Divisi :</h4></td>
-												<td><h4><?php echo $karyawan->divisi;?></h4></td>
-											</tr>
-										</tbody>
-									</table>
-								</div><br>
+                           <div class="panel panel-color panel-primary">
+                              <!-- Table -->
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th>
+                                          <h4>Nama :</h4>
+                                       </th>
+                                       <th>
+                                          <h4><?php echo $karyawan->nama;?></h4>
+                                       </th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>
+                                          <h4>Email :</h4>
+                                       </td>
+                                       <td>
+                                          <h4><?php echo $karyawan->email;?></h4>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td>
+                                          <h4>Divisi :</h4>
+                                       </td>
+                                       <td>
+                                          <h4><?php echo $karyawan->divisi;?></h4>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <br>
                            <br>
                         </div>
                         <div class="tab-pane" id="profile1">
@@ -138,32 +150,32 @@
 <!-- ============================================================== -->
 <!-- Init js -->
 <script>
-var currentTime = new Date();
-   $(function() {
-       $('#dari').datepicker( {
-           changeMonth: true,
-           changeYear: true,
-           showButtonPanel: true,
-           dateFormat: 'yy-mm',
-		   minDate: new Date('2018-01'),
-           onClose: function(dateText, inst) { 
-               $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-           }
-       }).datepicker("setDate", currentTime);
-	   var x = document.getElementById("dari").value;
-   	x = new Date(x);
-   	x.setDate(x.getDate());
-   	$('#sampai').datepicker( {
-           changeMonth: true,
-           changeYear: true,
-           showButtonPanel: true,
-           dateFormat: 'yy-mm',
-		   minDate: x,
-           onClose: function(dateText, inst) { 
-               $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-           }
-       }).datepicker("setDate", currentTime);
-   });
+   var currentTime = new Date();
+      $(function() {
+          $('#dari').datepicker( {
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
+              dateFormat: 'yy-mm',
+   		   minDate: new Date('2018-01'),
+              onClose: function(dateText, inst) { 
+                  $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+              }
+          }).datepicker("setDate", currentTime);
+   	   var x = document.getElementById("dari").value;
+      	x = new Date(x);
+      	x.setDate(x.getDate());
+      	$('#sampai').datepicker( {
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
+              dateFormat: 'yy-mm',
+   		   minDate: x,
+              onClose: function(dateText, inst) { 
+                  $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+              }
+          }).datepicker("setDate", currentTime);
+      });
 </script>
 <script>
    $("#carinilai").on('submit', (function (e) {

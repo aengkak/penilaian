@@ -48,15 +48,15 @@ class Main extends CI_Controller {
 		$this->load->view('home', $data);
 		//$this->load->view('template/footer');
 	}
-	/*public function ubah()
+	public function ubah()
 	{
 		$menu['akses'] = $this->Akses->selectAll();
 		$data['karyawan'] = $this->Karyawan->divisi();
-		$this->load->view('template/header');
-		$this->load->view('template/menu', $menu);
-		$this->load->view('editnilai', $data);
-		$this->load->view('template/footer');
-	}*/
+		//$this->load->view('template/header');
+		//$this->load->view('template/menu', $menu);
+		$this->load->view('ubah', $data);
+		//$this->load->view('template/footer');
+	}
 	public function index() {
 		if($_POST != NULL) {
 			$this->Login->log();

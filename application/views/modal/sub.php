@@ -19,7 +19,7 @@
 <div class="form-group">
    <label class="col-md-2 control-label">Nilai</label>
    <div class="col-md-10">
-      <input class="form-control" name="jumlah" type="text" placeholder="Nilai" required>
+      <input class="form-control" onkeypress="return hanyaAngka(event)" name="jumlah" type="text" placeholder="Nilai" required>
    </div>
 </div>
 <div class="form-group">
@@ -56,7 +56,7 @@
 <div class="form-group">
    <label class="col-md-2 control-label">Nilai</label>
    <div class="col-md-10">
-      <input class="form-control" value="<?php echo $sub->jumlah;?>" name="jumlah" type="text" placeholder="Nilai" required>
+      <input class="form-control" value="<?php echo $sub->jumlah;?>" onkeypress="return hanyaAngka(event)" name="jumlah" type="text" placeholder="Nilai" required>
    </div>
 </div>
 <div class="form-group">

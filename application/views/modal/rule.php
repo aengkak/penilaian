@@ -14,10 +14,10 @@
 <div class="form-group">
    <label class="col-md-2 control-label">Nilai</label>
    <div class="col-md-5">
-      <input class="form-control" max="100" name="dari" type="text" placeholder="0-100" required>
+      <input class="form-control" onkeypress="return hanyaAngka(event)" max="100" name="dari" type="text" placeholder="0-100" required>
    </div>
    <div class="col-md-5">
-      <input class="form-control" max="100" name="sampai" type="text" placeholder="0-100" required>
+      <input class="form-control" onkeypress="return hanyaAngka(event)" max="100" name="sampai" type="text" placeholder="0-100" required>
    </div>
 </div>
 <?php } else { ?>
@@ -37,10 +37,10 @@
 <div class="form-group">
    <label class="col-md-2 control-label">Nilai</label>
    <div class="col-md-5">
-      <input class="form-control" max="100" value="<?php echo $rule->dari;?>" name="dari" type="text" placeholder="0-100" required>
+      <input class="form-control" onkeypress="return hanyaAngka(event)" max="100" value="<?php echo $rule->dari;?>" name="dari" type="text" placeholder="0-100" required>
    </div>
    <div class="col-md-5">
-      <input class="form-control" max="100" name="sampai" type="text" value="<?php echo $rule->sampai;?>" placeholder="0-100" required>
+      <input class="form-control" onkeypress="return hanyaAngka(event)" max="100" name="sampai" type="text" value="<?php echo $rule->sampai;?>" placeholder="0-100" required>
    </div>
 </div>
 <?php } ?>

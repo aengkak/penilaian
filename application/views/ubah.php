@@ -8,10 +8,13 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="page-title-box">
-                  <h4 class="page-title">Beranda</h4>
+                  <h4 class="page-title">Ubah Nilai</h4>
                   <ol class="breadcrumb p-0 m-0">
+					<li>
+						<a style="cursor: pointer;" onclick="pindah('beranda');">Beranda</a>
+					</li>
                      <li class="active">
-                        Beranda
+                        Ubah Nilai
                      </li>
                   </ol>
                   <div class="clearfix"></div>
@@ -24,7 +27,7 @@
                <div class="card-box table-responsive">
                   <div class="m-t-0 header-title">
                      <form id="pilih">
-					 <input type="hidden" name="cek" value="0">
+					 <input type="hidden" name="cek" value="1">
                         <div class="col-md-5">
                            <select class="form-control select2" name="karyawan" id="karyawan" onchange="tgl(this.value)">
                               <option style="display:none" value="0">Nama Karyawan</option>
@@ -98,55 +101,55 @@
 <!-- End Right content here -->
 <!-- ============================================================== -->
 <script>
-	function pencet(id) {
+function pencet(id) {
 
-		swal({
-			title: "Memberi Nilai?",
-			text: "Anda akan memberi nilai",
-			type: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Ya",
-			cancelButtonText: "Batal",
-			closeOnConfirm: false,
-			closeOnCancel: false
-		}, function (isConfirm) {
-			if (isConfirm) {
-				swal.close();
-				$('#formket')[0].reset(); // reset form on modals
-				$('#modalket').modal({
-					backdrop: 'static',
-					keyboard: false
-				}, 'show'); // show bootstrap modal
-				$("#bodyket").load("<?php echo base_url();?>modalket/" + id, function (data) {
-					$("#bodyket").html(data);
+	swal({
+		title: "Memberi Nilai?",
+		text: "Anda akan memberi nilai",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "Ya",
+		cancelButtonText: "Batal",
+		closeOnConfirm: false,
+		closeOnCancel: false
+	}, function (isConfirm) {
+		if (isConfirm) {
+			swal.close();
+			$('#formket')[0].reset(); // reset form on modals
+			$('#modalket').modal({
+				backdrop: 'static',
+				keyboard: false
+			}, 'show'); // show bootstrap modal
+			$("#bodyket").load("<?php echo base_url();?>modalket/" + id, function (data) {
+				$("#bodyket").html(data);
+			});
+			$("#formket").on('submit', (function (e) {
+				e.preventDefault();
+
+				$.ajax({
+					url: "<?php echo base_url();?>addnilai",
+					type: "POST",
+					data: $("#formket").serialize(),
+					success: function (data) {
+						$('#modalket').modal('hide');
+						swal("Sukses!", "", "success");
+						tgl();
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						swal("Error!", "", "error");
+					}
 				});
-				$("#formket").on('submit', (function (e) {
-					e.preventDefault();
 
-					$.ajax({
-						url: "<?php echo base_url();?>addnilai",
-						type: "POST",
-						data: $("#formket").serialize(),
-						success: function (data) {
-							$('#modalket').modal('hide');
-							swal("Sukses!", "", "success");
-							tgl();
-						},
-						error: function (jqXHR, textStatus, errorThrown) {
-							swal("Error!", "", "error");
-						}
-					});
+			}));
 
-				}));
+		} else {
+			document.getElementById(id).checked = false;
+			swal("Cancelled", "Menambah nilai dibatalkan", "error");
+		}
+	});
 
-			} else {
-				document.getElementById(id).checked = false;
-				swal("Cancelled", "Menambah nilai dibatalkan", "error");
-			}
-		});
-
-	}
+}
 
 function lancar(id) {
 	swal({
@@ -197,5 +200,5 @@ function tgl() {
 			}
 		});
 	}
-} 
+}
 </script>

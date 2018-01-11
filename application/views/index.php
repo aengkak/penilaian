@@ -27,7 +27,7 @@
       <![endif]-->
       <!-- Sweet-Alert  -->
       <script src="<?php echo base_url();?>assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
-      <script src="<?php echo base_url();?>assets/pages/jquery.sweet-alert.init.js"></script>
+      <!--<script src="<?php echo base_url();?>assets/pages/jquery.sweet-alert.init.js"></script>-->
       <script src="<?php echo base_url();?>assets/js/modernizr.min.js"></script>
    </head>
    <body class="bg-transparent">
