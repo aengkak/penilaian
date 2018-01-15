@@ -56,6 +56,12 @@
                            <span class="hidden-xs">Nilai</span>
                            </a>
                         </li>
+						<li class="">
+                           <a href="#history" data-toggle="tab" aria-expanded="true">
+                           <span class="visible-xs"><i class="fa fa-gear"></i></span>
+                           <span class="hidden-xs">History</span>
+                           </a>
+                        </li>
                      </ul>
                      <div class="tab-content">
                         <div class="tab-pane active" id="home1">
@@ -110,6 +116,23 @@
                            <br>
                            <div id="hasilcari"></div>
                         </div>
+						
+						<div class="tab-pane" id="history">
+                           <form id="carihis">
+                              <input type="hidden" value="<?php echo $karyawan->id_karyawan;?>" name="karyawan_id">
+                              <div class="col-md-2">
+                                 <input readonly="true" id="dari1" name="dari" class="form-control" type="text" required>
+                              </div>
+                              <div class="col-md-2">
+                                 <input readonly="true" class="form-control" name="sampai" id="sampai1" type="text">
+                              </div>
+                              <input type="submit" value="Cari" class="btn btn-primary" required>
+                              <a class="btn btn-info" onclick="cetakhis();">Cetak Pdf</a>
+                           </form>
+                           <br>
+                           <div id="hasilhis"></div>
+                        </div>
+						
                      </div>
                   </div>
                </div>
@@ -175,6 +198,31 @@
                   $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
               }
           }).datepicker("setDate", currentTime);
+		  
+		  $('#dari1').datepicker( {
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
+              dateFormat: 'yy-mm',
+   		   minDate: new Date('2018-01'),
+              onClose: function(dateText, inst) { 
+                  $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+              }
+          }).datepicker("setDate", currentTime);
+   	   var x = document.getElementById("dari").value;
+      	x = new Date(x);
+      	x.setDate(x.getDate());
+      	$('#sampai1').datepicker( {
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
+              dateFormat: 'yy-mm',
+   		   minDate: x,
+              onClose: function(dateText, inst) { 
+                  $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+              }
+          }).datepicker("setDate", currentTime);
+		  
       });
 </script>
 <script>
@@ -202,6 +250,37 @@
                 success: function(data)
                 {
                    window.location = '<?php echo base_url();?>cetakpdf';
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    swal("Error!", "", "error");
+                }
+            });
+   }
+   $("#carihis").on('submit', (function (e) {
+   e.preventDefault();
+    $.ajax({
+                url : "<?php echo base_url();?>carihis",
+                type: "POST",
+                data: $('#carihis').serialize(),
+                success: function(data)
+                {
+                   $("#hasilhis").html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    swal("Error!", "", "error");
+                }
+            });
+   }));
+   function cetakhis() {
+   $.ajax({
+                url : "<?php echo base_url();?>cetakhis",
+                type: "POST",
+                data: $('#carihis').serialize(),
+                success: function(data)
+                {
+                   window.location = '<?php echo base_url();?>cetakhis';
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {

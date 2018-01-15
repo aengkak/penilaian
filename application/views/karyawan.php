@@ -123,6 +123,10 @@ function tambah() {
 	}, 'show'); // show bootstrap modal
 	$("#modalbody").load("modalkaryawan/", function (data) {
 		$("#modalbody").html(data);
+		$("#masuk").datepicker( {
+              showButtonPanel: true,
+              dateFormat: 'yy-mm-dd',
+		});
 	});
 }
 
@@ -135,6 +139,10 @@ function ganti(id) {
 	}, 'show'); // show bootstrap modal
 	$("#modalbody").load("<?php echo base_url();?>editkaryawan/" + id, function (data) {
 		$("#modalbody").html(data);
+		$("#masuk").datepicker( {
+              showButtonPanel: true,
+              dateFormat: 'yy-mm-dd',
+		});
 	});
 }
 $("#form").on('submit', (function (e) {

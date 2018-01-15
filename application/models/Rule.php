@@ -20,7 +20,8 @@ class Rule extends CI_model {
 		$sampai = $this->input->post('sampai');
 		$warna = $this->input->post('warna');
 		$ket = $this->input->post('ket');
-		$data = array('ket' => $ket, 'warna' => $warna, 'dari' => $dari, 'sampai' => $sampai, 'status' => $status);
+		$note = $this->input->post('note');
+		$data = array('ket' => $ket, 'warna' => $warna, 'dari' => $dari, 'sampai' => $sampai, 'note' => $note, 'status' => $status);
 		$this->db->insert('rule', $data);
 		$this->db->insert_id();
 		
@@ -55,7 +56,8 @@ class Rule extends CI_model {
 		$sampai = $this->input->post('sampai');
 		$warna = $this->input->post('warna');
 		$ket = $this->input->post('ket');
-		$data = array('ket' => $ket, 'warna' => $warna, 'dari' => $dari, 'sampai' => $sampai);
+		$note = $this->input->post('note');
+		$data = array('ket' => $ket, 'warna' => $warna, 'dari' => $dari, 'sampai' => $sampai, 'note' => $note);
 		$this->db->where('id_rule', $id);
 		$this->db->update('rule', $data);
 		

@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\">
+        <style>
+            h2{
+                text-align: center
+            }
+            .mytable{
+                border:1px solid black; 
+                border-collapse: collapse;
+                width: 100%;
+            }
+            .mytable tr th, .mytable tr td{
+                border:1px solid black; 
+                padding: 5px 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Daftar Penilaian Yuliana  Sales</h2>
+        <table class="mytable">
+            <tr>
+               <th align="left">Tanggal</th>
+               <th align="left">Nilai</th>
+               <th align="left">Keterangan</th>
+            </tr>
+                        <tr>
+               <td>11 January 2018</td>
+               <td>Telat</td>
+               <td>jam 09:15 datang</td>
+            </tr>
+                        <tr>
+               <td>10 January 2018</td>
+               <td>Ok</td>
+               <td>Ok</td>
+            </tr>
+                        <tr>
+               <td>10 January 2018</td>
+               <td>Bolos</td>
+               <td>gk masuk</td>
+            </tr>
+                        <tr>
+               <td>12 January 2018</td>
+               <td>Ijin</td>
+               <td>a</td>
+            </tr>
+                    </table>
+		<h4 align="right">Nilai Anda : <b><font color="yellow">66</font></b></h4>
+		<h4 align="right">Catatan : <b></b></h4>
+    </body>
+</html>

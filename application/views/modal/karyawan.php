@@ -23,6 +23,12 @@
       <?php } ?>
    </div>
 </div>
+<div class="form-group">
+   <label class="col-md-2 control-label">Tanggal Masuk</label>
+   <div class="col-md-10">
+      <input class="form-control" readonly="true" id="masuk" name="masuk" type="text" placeholder="Tanggal Masuk">
+   </div>
+</div>
 <?php } else { ?>
 <input type="hidden" name="id_karyawan" value="<?php echo $karyawan->id_karyawan;?>">
 <div class="form-group">
@@ -49,6 +55,12 @@
          </label>
       </div>
       <?php } ?>
+   </div>
+</div>
+<div class="form-group">
+   <label class="col-md-2 control-label">Tanggal Masuk</label>
+   <div class="col-md-10">
+      <input class="form-control" readonly="true" id="masuk" value="<?php echo $karyawan->masuk;?>" name="masuk" type="text" placeholder="Tanggal Masuk">
    </div>
 </div>
 <?php } ?>

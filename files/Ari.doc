@@ -17,17 +17,12 @@
         </style>
     </head>
     <body>
-        <h2>Daftar Penilaian Hakiki  IT</h2>
+        <h2>Daftar Penilaian Ari  Seluler</h2>
         <table class="mytable">
             <tr>
                <th align="left">Tanggal</th>
                <th align="left">Nilai</th>
                <th align="left">Keterangan</th>
-            </tr>
-                        <tr>
-               <td>01 January 2018</td>
-               <td>Ok</td>
-               <td>Ok</td>
             </tr>
                         <tr>
                <td>02 January 2018</td>
@@ -36,14 +31,13 @@
             </tr>
                         <tr>
                <td>03 January 2018</td>
-               <td>Ok</td>
-               <td>Ok</td>
+               <td>Telat</td>
+               <td>telat</td>
             </tr>
                         <tr>
                <td>04 January 2018</td>
-               <td>Telat</td>
-               <td>karena<br />
-kesiangan</td>
+               <td>Ok</td>
+               <td>Ok</td>
             </tr>
                         <tr>
                <td>05 January 2018</td>
@@ -56,12 +50,12 @@ kesiangan</td>
                <td>Ok</td>
             </tr>
                         <tr>
-               <td>08 January 2018</td>
+               <td>01 January 2018</td>
                <td>Ok</td>
                <td>Ok</td>
             </tr>
                         <tr>
-               <td>07 January 2018</td>
+               <td>08 January 2018</td>
                <td>Ok</td>
                <td>Ok</td>
             </tr>
@@ -72,11 +66,6 @@ kesiangan</td>
             </tr>
                         <tr>
                <td>10 January 2018</td>
-               <td>Tanggung Jawab</td>
-               <td>kurang</td>
-            </tr>
-                        <tr>
-               <td>11 January 2018</td>
                <td>Ok</td>
                <td>Ok</td>
             </tr>
@@ -91,12 +80,27 @@ kesiangan</td>
                <td>Ok</td>
             </tr>
                         <tr>
-               <td>10 January 2018</td>
+               <td>07 January 2018</td>
                <td>Ok</td>
                <td>Ok</td>
             </tr>
+                        <tr>
+               <td>03 January 2018</td>
+               <td>Tepat Waktu</td>
+               <td>bohong</td>
+            </tr>
+                        <tr>
+               <td>11 January 2018</td>
+               <td>Ok</td>
+               <td>Ok</td>
+            </tr>
+                        <tr>
+               <td>10 January 2018</td>
+               <td></td>
+               <td>nndfjknsdkjfoweijfkwengoi</td>
+            </tr>
                     </table>
-		<h4 align="right">Nilai Anda : <b><font color="green">90</font></b></h4>
-		<h4 align="right">Catatan : <b></b></h4>
+		<h4 align="right">Nilai Anda : <b><font color="black">12</font></b></h4>
+		<h4 align="right">Catatan : <b>Selamat anda akan keluar</b></h4>
     </body>
 </html>

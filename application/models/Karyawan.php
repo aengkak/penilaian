@@ -25,7 +25,8 @@ class Karyawan extends CI_model {
 		$nama = $this->input->post('nama');
 		$email = $this->input->post('email');
 		$divisi_id = $this->input->post('divisi_id');
-		$data = array('nama' => $nama, 'email' => $email, 'divisi_id' => $divisi_id, 'status' => $status);
+		$masuk = $this->input->post('masuk');
+		$data = array('nama' => $nama, 'email' => $email, 'divisi_id' => $divisi_id, 'masuk' => $masuk, 'status' => $status);
 		$this->db->insert('karyawan', $data);
 		$this->db->insert_id();
 		
@@ -64,7 +65,8 @@ class Karyawan extends CI_model {
 		$nama = $this->input->post('nama');
 		$email = $this->input->post('email');
 		$divisi_id = $this->input->post('divisi_id');
-		$data = array('nama' => $nama, 'email' => $email, 'divisi_id' => $divisi_id);
+		$masuk = $this->input->post('masuk');
+		$data = array('nama' => $nama, 'email' => $email, 'divisi_id' => $divisi_id, 'masuk' => $masuk);
 		$this->db->where('id_karyawan', $id);
 		$this->db->update('karyawan', $data);
 		

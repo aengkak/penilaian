@@ -1,15 +1,9 @@
-<?php
-   if($this->session->userdata('status') != "login"){
-   			redirect(base_url());
-   		}else {
-   		}
-   ?>
 <!DOCTYPE html>
 <html>
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="Karunia Travel">
+      <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
       <meta name="author" content="Coderthemes">
       <link rel="shortcut icon" href="<?php echo base_url();?>assets/images/favicon.png">
       <title>Penilaian</title>
@@ -68,33 +62,25 @@
       <script src="<?php echo base_url();?>assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
       <script src="<?php echo base_url();?>assets/pages/jquery.sweet-alert.init.js"></script>
       <script src="<?php echo base_url();?>assets/js/modernizr.min.js"></script>
-      <script>
-         function hanyaAngka(evt) {
-           var charCode = (evt.which) ? evt.which : event.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57))
-         
-             return false;
-           return true;
-         }
-      </script>
-	  <script>
-   var myVar;
-   $(window).on('load',function(){
-   	myVar = setInterval(alertFunc, 15 * 60 * 1000);
-   });
-   function alertFunc() {
-   	$.ajax({
-     type: "POST",
-     url: "<?php echo base_url('checkses')?>",
-     success: function(data){
-        if (data == 1) {
-   
-        } else {
-        	alert("Sesi Masuk Habis");
-   			window.location.href="<?php echo base_url();?>";
-        }
-     }
-     });
-   }
-</script>
    </head>
+   <body>
+      <h3>Daftar Nilai <?php echo $karyawan->nama."  ".$karyawan->divisi;?></h3>
+      <br><br>
+      <table id="datatable" class="display table table-striped table-bordered">
+         <thead>
+            <tr>
+               <th>Tanggal</th>
+               <th>Nilai</th>
+            </tr>
+         </thead>
+         <tbody>
+            <?php foreach($nilai as $key) { ?>
+            <tr>
+               <td><?php echo date('F Y', strtotime($key->tgl));?></td>
+               <td><?php echo $key->nilai;?></td>
+            </tr>
+            <?php } ?>
+         </tbody>
+      </table>
+   </body>
+</html>

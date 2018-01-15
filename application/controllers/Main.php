@@ -422,6 +422,8 @@ class Main extends CI_Controller {
 	public function modalnilai() {
 		$data['cek'] = $this->input->post('cek');
 		$data['sub'] = $this->Sub->selectAll();
+		$id = $this->input->post("karyawan");
+		$data['karyawan'] = $this->Karyawan->edit($id);
 		$bulan = $this->input->post("bulan");
 		$tgl_pertama = date('Y-m-01', strtotime($bulan));
 		$tgl_terakhir = date('Y-m-t', strtotime($bulan));
@@ -431,10 +433,16 @@ class Main extends CI_Controller {
 			$d[] = $tgl_pertama;
 			$tgl_pertama = date("Y-m-d", strtotime("+1 day", strtotime($tgl_pertama)));
 		}
-
 		$data['bulan'] = $d;
-		$id = $this->input->post("karyawan");
-		$data['karyawan'] = $this->Karyawan->edit($id);
+		
+		$d1 = array();
+		$awal = $data['karyawan']->masuk;
+		while (strtotime($awal) <= strtotime($tgl_terakhir)) {
+			$d1[] = $awal;
+			$awal = date ("Y-m-d", strtotime("+14 day", strtotime($awal)));
+		}
+		$data['tambahan'] = $d1;
+		
 		$data['nilai'] = $this->Nilai->cek();
 		$data['kategori'] = $this->Kategori->selectAll();
 		$this->load->view('modal/nilai', $data);
@@ -533,6 +541,7 @@ class Main extends CI_Controller {
 		$karyawan = $this->Karyawan->selectAll();
 		$nilai = $this->Nilai->hasilbulan();
 		$rule = $this->Rule->selectAll();
+		$eksel['sub'] = $this->Sub->selectAll();
 		foreach ($karyawan as $key) {
 			
 			$now = 0;
@@ -542,10 +551,6 @@ class Main extends CI_Controller {
 				}
 			}
 			
-			$eksel['nilai'] = $this->Nilai->bulanini($key->id_karyawan);
-		$eksel['karyawan'] = $this->Karyawan->edit($key->id_karyawan);
-		file_put_contents("files/".$key->nama.".xls", $this->load->view('modal/excel', $eksel, TRUE));
-			
 			$from_email = 'norok.event3@gmail.com'; // ganti dengan email kalian
 			$subject = 'Skor Bulanan';
 			$data['nama'] = $key->nama;
@@ -554,12 +559,21 @@ class Main extends CI_Controller {
 			foreach($rule as $keyrule) {
 				if ($now >= $keyrule->dari && $now <= $keyrule->sampai) {
 					$warna = $keyrule->warna;
+					$catatan = $keyrule->note;
 					break;
-				} else {
-					$warna = "green";
 				}
 			}
 			$data['warna'] = $warna;
+			$data['catatan'] = $catatan;
+			
+			$eksel['skor'] = $now;
+			$eksel['warna'] = $warna;
+			$eksel['catatan'] = $catatan;
+			$eksel['nilai'] = $this->Nilai->bulanini($key->id_karyawan);
+		$eksel['karyawan'] = $this->Karyawan->edit($key->id_karyawan);
+		file_put_contents("files/".$key->nama.".doc", $this->load->view('modal/excel', $eksel, TRUE));
+			
+			
 			$message = $this->load->view('email/header', $data, TRUE);
 			$message .=$this->load->view('email/bulanan', $data, TRUE);
 			$message .=$this->load->view('email/footer', $data, TRUE);
@@ -583,7 +597,7 @@ class Main extends CI_Controller {
 			$this->email->to($key->email);
 			$this->email->subject($subject);
 			$this->email->message($message);
-			$this->email->attach("files/".$key->nama.".xls");
+			$this->email->attach("files/".$key->nama.".doc");
 			// gunakan return untuk mengembalikan nilai yang akan selanjutnya diproses ke verifikasi email
 			$this->email->send();
 			unset($eksel['karyawan']);
@@ -596,6 +610,7 @@ class Main extends CI_Controller {
 		$karyawan = $this->Karyawan->selectAll();
 		$nilai = $this->Nilai->tigabulan();
 		$rule = $this->Rule->selectAll();
+		$eksel['sub'] = $this->Sub->selectAll();
 		
 		foreach ($karyawan as $key) {
 			$tri = 0;
@@ -604,10 +619,7 @@ class Main extends CI_Controller {
 					$tri = $tri + $keyt->nilai;
 				}
 			}
-			$eksel['nilai'] = $this->Nilai->triwulan($key->id_karyawan);
-		$eksel['karyawan'] = $this->Karyawan->edit($key->id_karyawan);
-		file_put_contents("files/".$key->nama.".xls", $this->load->view('modal/excel', $eksel, TRUE));
-		
+			
 			$from_email = 'norok.event3@gmail.com'; // ganti dengan email kalian
 			$subject = 'Skor Triwulan';
 			$data['nama'] = $key->nama;
@@ -616,12 +628,21 @@ class Main extends CI_Controller {
 			foreach($rule as $keyrule) {
 				if ($tri/3 >= $keyrule->dari && $tri/3 <= $keyrule->sampai) {
 					$warna = $keyrule->warna;
+					$catatan = $keyrule->note;
 					break;
-				} else {
-					$warna = "green";
 				}
 			}
 			$data['warna'] = $warna;
+			$data['catatan'] = $catatan;
+			
+			$eksel['skor'] = round($tri/3);
+			$eksel['warna'] = $warna;
+			$eksel['catatan'] = $catatan;
+			$eksel['nilai'] = $this->Nilai->triwulan($key->id_karyawan);
+		$eksel['karyawan'] = $this->Karyawan->edit($key->id_karyawan);
+		file_put_contents("files/".$key->nama.".doc", $this->load->view('modal/excel', $eksel, TRUE));
+		
+			
 			$message = $this->load->view('email/header', $data, TRUE);
 			$message .=$this->load->view('email/hasil', $data, TRUE);
 			$message .=$this->load->view('email/footer', $data, TRUE);
@@ -644,7 +665,7 @@ class Main extends CI_Controller {
 			$this->email->to($key->email);
 			$this->email->subject($subject);
 			$this->email->message($message);
-			$this->email->attach("files/".$key->nama.".xls");
+			$this->email->attach("files/".$key->nama.".doc");
 			// gunakan return untuk mengembalikan nilai yang akan selanjutnya diproses ke verifikasi email
 			$this->email->send();
 			unset($eksel['karyawan']);
@@ -657,7 +678,7 @@ class Main extends CI_Controller {
 		$karyawan = $this->Karyawan->selectAll();
 		$nilai = $this->Nilai->enambulan();
 		$rule = $this->Rule->selectAll();
-		
+		$eksel['sub'] = $this->Sub->selectAll();
 		foreach ($karyawan as $key) {
 			$tri = 0;
 			foreach ($nilai as $keyt) {
@@ -665,11 +686,6 @@ class Main extends CI_Controller {
 					$tri = $tri + $keyt->nilai;
 				}
 			}
-			
-			$eksel['nilai'] = $this->Nilai->semester($key->id_karyawan);
-		$eksel['karyawan'] = $this->Karyawan->edit($key->id_karyawan);
-		file_put_contents("files/".$key->nama.".xls", $this->load->view('modal/excel', $eksel, TRUE));
-			
 			$from_email = 'norok.event3@gmail.com'; // ganti dengan email kalian
 			$subject = 'Skor Semester';
 			$data['nama'] = $key->nama;
@@ -678,12 +694,21 @@ class Main extends CI_Controller {
 			foreach($rule as $keyrule) {
 				if ($tri/6 >= $keyrule->dari && $tri/6 <= $keyrule->sampai) {
 					$warna = $keyrule->warna;
+					$catatan = $keyrule->note;
 					break;
-				} else {
-					$warna = "green";
 				}
 			}
 			$data['warna'] = $warna;
+			$data['catatan'] = $catatan;
+			
+			$eksel['skor'] = round($tri/6);
+			$eksel['warna'] = $warna;
+			$eksel['catatan'] = $catatan;
+			$eksel['nilai'] = $this->Nilai->semester($key->id_karyawan);
+		$eksel['karyawan'] = $this->Karyawan->edit($key->id_karyawan);
+		file_put_contents("files/".$key->nama.".doc", $this->load->view('modal/excel', $eksel, TRUE));
+			
+			
 			$message = $this->load->view('email/header', $data, TRUE);
 			$message .=$this->load->view('email/hasil', $data, TRUE);
 			$message .=$this->load->view('email/footer', $data, TRUE);
@@ -706,7 +731,7 @@ class Main extends CI_Controller {
 			$this->email->to($key->email);
 			$this->email->subject($subject);
 			$this->email->message($message);
-			$this->email->attach("files/".$key->nama.".xls");
+			$this->email->attach("files/".$key->nama.".doc");
 			// gunakan return untuk mengembalikan nilai yang akan selanjutnya diproses ke verifikasi email
 			$this->email->send();
 			unset($eksel['karyawan']);
@@ -727,12 +752,31 @@ class Main extends CI_Controller {
 		$data['nilai'] = $this->Nilai->cari();
 		$this->load->view('modal/carinilai', $data);
 	}
+	public function carihis() {
+		$data['nilai'] = $this->Nilai->carihis();
+		$this->load->view('modal/carihasil', $data);
+	}
 	public function cetakpdf() {
 		$id = $this->input->post('karyawan_id');
 		$data['karyawan'] = $this->Karyawan->edit($id);
 		$data['nilai'] = $this->Nilai->cari();
 			// Load all views as normal
 			$this->load->view('pdf', $data);
+			// Get output html
+			$html = $this->output->get_output();
+
+			// Convert to PDF
+			$this->dompdf->load_html($html);
+			$this->dompdf->set_paper('A4', 'potrait');
+			$this->dompdf->render();
+			$this->dompdf->stream($data['karyawan']->nama.".pdf");
+	}
+	public function cetakhis() {
+		$id = $this->input->post('karyawan_id');
+		$data['karyawan'] = $this->Karyawan->edit($id);
+		$data['nilai'] = $this->Nilai->carihis();
+			// Load all views as normal
+			$this->load->view('pdfhis', $data);
 			// Get output html
 			$html = $this->output->get_output();
 
@@ -773,10 +817,13 @@ class Main extends CI_Controller {
 		}
 	}
 	public function tes() {
-		date_default_timezone_set('Asia/Jakarta');
-		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
-		$dari = date("Y-m", strtotime($d1));
-		echo $dari;
+		$id_karyawan = 1;
+		$eksel['skor'] = "90";
+			$eksel['warna'] = "green";
+			$eksel['catatan'] = "Ok";
+		$eksel['sub'] = $this->Sub->selectAll();
+		$eksel['nilai'] = $this->Nilai->bulanini($id_karyawan);
+		$eksel['karyawan'] = $this->Karyawan->edit($id_karyawan);
+		$this->load->view('modal/excel', $eksel);
 	}
 }
