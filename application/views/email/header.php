@@ -284,12 +284,16 @@
                 <table cellpadding="0" cellspacing="0" width="600" class="w320">
                   <tr>
                     <td class="pull-left mobile-header-padding-left" style="vertical-align: middle;">
-                      <a target="_blank" href="<?php echo base_url();?>"><img src="http://pesanhotel.byethost32.com/assets/front/images/logokt.png" alt="logo"></a>
+                      <a target="_blank" href="<?php echo base_url();?>">
+					  <img src="https://agent.karuniatravel.co.id/assets/img/karunia_converted.png" alt="logo"></a>
                     </td>
                     <td class="pull-right mobile-header-padding-right" style="color: #4d4d4d;">
-                      <a target="_blank" href="https://www.facebook.com/karuniatravel"><img width="44" height="47" src="https://grytics.com/wp-content/uploads/2015/01/1414386628_facebook_circle_color-512.png" alt="fb" /></a>
-                      <a target="_blank" href="https://www.instagram.com/karuniatravel/"><img width="38" height="47" src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/instagram_circle_color-512.png" alt="ig" /></a>
-                      <a target="_blank" href="https://twitter.com/karuniatrvsby"><img width="40" height="47" src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/twitter_circle_color-128.png" alt="twitter" /></a>
+                      <a target="_blank" href="https://www.facebook.com/karuniatravel"><img width="44" height="47" 
+					  src="http://karuniatravel.com/assets/images/icon-facebook.png" alt="fb" /></a>
+                      <a target="_blank" href="https://plus.google.com/+Karuniatravel"><img width="38" height="47" 
+					  src="http://karuniatravel.com/assets/images/icon-gplus.png" alt="ig" /></a>
+                      <a target="_blank" href="https://twitter.com/karuniatrvsby"><img width="40" height="47" 
+					  src="http://karuniatravel.com/assets/images/icon-twitter.png" alt="twitter" /></a>
                     </td>
                   </tr>
                 </table>

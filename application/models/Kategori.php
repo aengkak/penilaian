@@ -18,7 +18,8 @@ class Kategori extends CI_model {
   public function add() {
 		$status = "1";
 		$nama = $this->input->post('nama');
-		$data = array('nama' => $nama, 'status' => $status);
+		$warna = $this->input->post('warna');
+		$data = array('nama' => $nama, 'warna' => $warna, 'status' => $status);
 		$this->db->insert('kategori', $data);
 		$this->db->insert_id();
 		
@@ -47,7 +48,8 @@ class Kategori extends CI_model {
 	public function update(){
 		$id = $this->input->post('id_kategori');
 		$nama = $this->input->post('nama');
-		$data = array('nama' => $nama);
+		$warna = $this->input->post('warna');
+		$data = array('nama' => $nama, 'warna' => $warna);
 		$this->db->where('id_kategori', $id);
 		$this->db->update('kategori', $data);
 		

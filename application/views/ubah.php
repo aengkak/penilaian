@@ -10,9 +10,6 @@
                <div class="page-title-box">
                   <h4 class="page-title">Ubah Nilai</h4>
                   <ol class="breadcrumb p-0 m-0">
-					<li>
-						<a style="cursor: pointer;" onclick="pindah('beranda');">Beranda</a>
-					</li>
                      <li class="active">
                         Ubah Nilai
                      </li>
@@ -32,9 +29,10 @@
                            <select class="form-control select2" name="karyawan" id="karyawan" onchange="tgl(this.value)">
                               <option style="display:none" value="0">Nama Karyawan</option>
                               <optgroup label="Karyawan">
-                                 <?php foreach ($karyawan as $key) { ?>
+                                 <?php foreach ($karyawan as $key) { 
+								 if($key->status_karyawan != 0) { ?>
                                  <option value="<?php echo $key->id_karyawan;?>"><?php echo $key->nama." ~ ".$key->divisi;?></option>
-                                 <?php } ?>
+                                 <?php } } ?>
                               </optgroup>
                            </select>
                         </div>
@@ -101,104 +99,7 @@
 <!-- End Right content here -->
 <!-- ============================================================== -->
 <script>
-function pencet(id) {
-
-	swal({
-		title: "Memberi Nilai?",
-		text: "Anda akan memberi nilai",
-		type: "warning",
-		showCancelButton: true,
-		confirmButtonColor: "#DD6B55",
-		confirmButtonText: "Ya",
-		cancelButtonText: "Batal",
-		closeOnConfirm: false,
-		closeOnCancel: false
-	}, function (isConfirm) {
-		if (isConfirm) {
-			swal.close();
-			$('#formket')[0].reset(); // reset form on modals
-			$('#modalket').modal({
-				backdrop: 'static',
-				keyboard: false
-			}, 'show'); // show bootstrap modal
-			$("#bodyket").load("<?php echo base_url();?>modalket/" + id, function (data) {
-				$("#bodyket").html(data);
-			});
-			$("#formket").on('submit', (function (e) {
-				e.preventDefault();
-
-				$.ajax({
-					url: "<?php echo base_url();?>addnilai",
-					type: "POST",
-					data: $("#formket").serialize(),
-					success: function (data) {
-						$('#modalket').modal('hide');
-						swal("Sukses!", "", "success");
-						tgl();
-					},
-					error: function (jqXHR, textStatus, errorThrown) {
-						swal("Error!", "", "error");
-					}
-				});
-
-			}));
-
-		} else {
-			document.getElementById(id).checked = false;
-			swal("Cancelled", "Menambah nilai dibatalkan", "error");
-		}
-	});
-
-}
-
-function lancar(id) {
-	swal({
-		title: "Memberi Nilai?",
-		text: "Anda akan memberi nilai",
-		type: "warning",
-		showCancelButton: true,
-		confirmButtonColor: "#DD6B55",
-		confirmButtonText: "Ya",
-		cancelButtonText: "Batal",
-		closeOnConfirm: false,
-		closeOnCancel: false
-	}, function (isConfirm) {
-		if (isConfirm) {
-			$.ajax({
-				url: "<?php echo base_url();?>addlancar/" + id,
-				data: $("#nilai").serialize(),
-				type: "POST",
-				success: function (data) {
-					tgl();
-					swal("Sukses!", "", "success");
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
-					swal("Error!", "", "error");
-				}
-			});
-
-		} else {
-			document.getElementById(id).checked = false;
-			swal("Cancelled", "Menambah nilai dibatalkan", "error");
-		}
-	});
-}
-
-function tgl() {
-	var x = document.getElementById("karyawan").value;
-	if (x != 0) {
-		$.ajax({
-			url: "<?php echo base_url();?>modalnilai",
-			type: "POST",
-			data: $('#pilih').serialize(),
-
-			success: function (data) {
-				$("#isi").html(data);
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				swal("Error!", "", "error");
-			}
-		});
-	}
-}
+function pencet(id){swal({title:"Memberi Nilai?",text:"Anda akan memberi nilai",type:"warning",showCancelButton:!0,confirmButtonColor:"#DD6B55",confirmButtonText:"Ya",cancelButtonText:"Batal",closeOnConfirm:!1,closeOnCancel:!1},function(isConfirm){if(isConfirm){swal.close();$('#formket')[0].reset();$('#modalket').modal({backdrop:'static',keyboard:!1},'show');$("#bodyket").load("<?php echo base_url();?>modalket/"+id,function(data){$("#bodyket").html(data)});$("#formket").on('submit',(function(e){e.preventDefault();$.ajax({url:"<?php echo base_url();?>addnilai",type:"POST",data:$("#formket").serialize(),success:function(data){$(".modal").modal('hide');swal({title:"Sukses",text:"Berhasil",type:"success"},function(){location.reload()})},error:function(jqXHR,textStatus,errorThrown){swal("Error!","","error")}})}))}else{document.getElementById(id).checked=!1;$('#formket')[0].reset();swal.close()}})}
+function lancar(id){swal({title:"Memberi Nilai?",text:"Anda akan memberi nilai",type:"warning",showCancelButton:!0,confirmButtonColor:"#DD6B55",confirmButtonText:"Ya",cancelButtonText:"Batal",closeOnConfirm:!1,closeOnCancel:!1},function(isConfirm){if(isConfirm){$.ajax({url:"<?php echo base_url();?>addlancar/"+id,data:$("#formnilai").serialize(),type:"POST",success:function(data){$(".modal").modal('hide');swal({title:"Sukses",text:"Berhasil",type:"success"},function(){location.reload()})},error:function(jqXHR,textStatus,errorThrown){swal("Error!","","error")}})}else{document.getElementById(id).checked=!1;swal.close()}})}
+function tgl(){var x=document.getElementById("karyawan").value;if(x!=0){$.ajax({url:"<?php echo base_url();?>modalnilai",type:"POST",data:$('#pilih').serialize(),success:function(data){$("#isi").html(data)},error:function(jqXHR,textStatus,errorThrown){swal("Error!","","error")}})}} 
 </script>

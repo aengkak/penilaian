@@ -22,9 +22,9 @@
                <div class="radio radio-primary">
 			   <?php $cikcek = 0; foreach ($nilai as $keyn) {
 				   if($value == $keyn->tgl) {
-					   if(strtolower($keyn->sub) == "bolos") {
+					   if(strtolower($keyn->sub_id) == "11") {
                      		$cikcek = $cikcek + 1;
-                     	} elseif(strtolower($keyn->sub) == "ijin") {
+                     	} elseif(strtolower($keyn->sub_id) == "12") {
                      		$cikcek = $cikcek + 1;
                      	} elseif ($keyn->sub_id != 0) {
 							$cikcek = $cikcek + 1;

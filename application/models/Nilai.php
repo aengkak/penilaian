@@ -171,7 +171,7 @@ class Nilai extends CI_model {
 		$id = $this->input->post('karyawan');
 		$this->db->select('*');
 		$this->db->from('nilai');
-		$this->db->join('sub', 'nilai.sub_id = sub.id_sub');
+		//$this->db->join('sub', 'nilai.sub_id = sub.id_sub');
 		$this->db->where('nilai.status', $status);
 		$this->db->where('nilai.karyawan_id', $id);
 		return $this->db->get()->result();
@@ -194,7 +194,7 @@ class Nilai extends CI_model {
 		$status = 1;
 		
 		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
 		$d2 = date("Y-m", strtotime($d1));
 		$dari = date($d2."-1");
 		$sampai = date($d2."-t");
@@ -213,23 +213,21 @@ class Nilai extends CI_model {
 		$status = 1;
 		
 		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
-		$d2 = date("Y-m", strtotime($d1));
-		$date = date($d2."-1");
-		
-		//$date = date("Y-m-01");
-		if($date >= date("Y-01-01") && $date <= date("Y-03-t")) {
-			$dari = date("Y-01-01");
-			$sampai = date("Y-03-t");
-		} elseif($date >= date("Y-04-01") && $date <= date("Y-06-t")) {
-			$dari = date("Y-04-01");
-			$sampai = date("Y-06-t");
-		} elseif($date >= date("Y-07-01") && $date <= date("Y-09-t")) {
-			$dari = date("Y-07-01");
-			$sampai = date("Y-09-t");
-		} elseif($date >= date("Y-10-01") && $date <= date("Y-12-t")) {
-			$dari = date("Y-10-01");
-			$sampai = date("Y-12-t");
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
+		$date = date("m", strtotime($d1));
+		//$date = date($d2."-1");
+		if($date >= 1 && $date <= 3) {
+			$dari = date("Y-01-1", strtotime($d1));
+			$sampai = date("Y-03-t", strtotime($d1));
+		} elseif($date >=4 && $date <= 6) {
+			$dari = date("Y-04-1", strtotime($d1));
+			$sampai = date("Y-06-t", strtotime($d1));
+		} elseif($date >= 7 && $date <= 9) {
+			$dari = date("Y-07-1", strtotime($d1));
+			$sampai = date("Y-09-t", strtotime($d1));
+		} elseif($date >= 10 && $date <= 12) {
+			$dari = date("Y-10-1", strtotime($d1));
+			$sampai = date("Y-12-t", strtotime($d1));
 		}
 		
 		$this->db->where('nilai.status', $status);
@@ -260,6 +258,31 @@ class Nilai extends CI_model {
 		$this->db->where('tgl <=', $sampai);
 		return $this->db->get('hasil')->result();
 	}
+	public function tigabulanlalu() {
+		$status = 1;
+		date_default_timezone_set('Asia/Jakarta');
+		$d = date("Y-m-d");
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
+		$date = date("m", strtotime($d1));
+		//$date = date($d2."-1");
+		if($date >= 1 && $date <= 3) {
+			$dari = date("Y-01-1", strtotime($d1));
+			$sampai = date("Y-03-t", strtotime($d1));
+		} elseif($date >=4 && $date <= 6) {
+			$dari = date("Y-04-1", strtotime($d1));
+			$sampai = date("Y-06-t", strtotime($d1));
+		} elseif($date >= 7 && $date <= 9) {
+			$dari = date("Y-07-1", strtotime($d1));
+			$sampai = date("Y-09-t", strtotime($d1));
+		} elseif($date >= 10 && $date <= 12) {
+			$dari = date("Y-10-1", strtotime($d1));
+			$sampai = date("Y-12-t", strtotime($d1));
+		}
+		
+		$this->db->where('tgl >=', $dari);
+		$this->db->where('tgl <=', $sampai);
+		return $this->db->get('hasil')->result();
+	}
 	public function enambulan() {
 		date_default_timezone_set('Asia/Jakarta');
 		$status = 1;
@@ -275,22 +298,42 @@ class Nilai extends CI_model {
 		$this->db->where('tgl <=', $sampai);
 		return $this->db->get('hasil')->result();
 	}
+	public function enambulanlalu() {
+		date_default_timezone_set('Asia/Jakarta');
+		$status = 1;
+		
+		$d = date("Y-m-d");
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
+		$date = date("m", strtotime($d1));
+		
+		//$date = date("Y-m-01");
+		if($date >= 1 && $date <= 6) {
+			$dari = date("Y-01-1", strtotime($d1));
+			$sampai = date("Y-06-t", strtotime($d1));
+		} elseif($date >= 7 && $date <= 12) {
+			$dari = date("Y-07-1", strtotime($d1));
+			$sampai = date("Y-12-t", strtotime($d1));
+		}
+		
+		$this->db->where('tgl >=', $dari);
+		$this->db->where('tgl <=', $sampai);
+		return $this->db->get('hasil')->result();
+	}
 	public function semester($id_karyawan) {
 		date_default_timezone_set('Asia/Jakarta');
 		$status = 1;
 		
 		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
-		$d2 = date("Y-m", strtotime($d1));
-		$date = date($d2."-1");
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
+		$date = date("m", strtotime($d1));
 		
 		//$date = date("Y-m-01");
-		if($date >= date("Y-01-01") && $date <= date("Y-06-t")) {
-			$dari = date("Y-01-01");
-			$sampai = date("Y-06-t");
-		} elseif($date >= date("Y-07-01") && $date <= date("Y-12-t")) {
-			$dari = date("Y-07-01");
-			$sampai = date("Y-12-t");
+		if($date >= 1 && $date <= 6) {
+			$dari = date("Y-01-1", strtotime($d1));
+			$sampai = date("Y-06-t", strtotime($d1));
+		} elseif($date >= 7 && $date <= 12) {
+			$dari = date("Y-07-1", strtotime($d1));
+			$sampai = date("Y-12-t", strtotime($d1));
 		}
 		
 		$this->db->where('nilai.status', $status);
@@ -306,6 +349,26 @@ class Nilai extends CI_model {
 		$s = $this->input->post('sampai');
 		$sampai = date($s."-t");
 		$karyawan_id = $this->input->post('karyawan_id');
+		$this->db->select('*');
+		$this->db->from('nilai');
+		$this->db->join('sub', 'nilai.sub_id = sub.id_sub');
+		$this->db->join('user', 'nilai.user_id = user.id_user');
+		$this->db->join('karyawan', 'nilai.karyawan_id = karyawan.id_karyawan');
+		$this->db->where('nilai.status', $status);
+		$this->db->order_by("tgl", "asc");
+		$this->db->where('karyawan_id', $karyawan_id);
+		$this->db->where('tgl >=', $dari);
+		$this->db->where('tgl <=', $sampai);
+		return $this->db->get()->result();
+	}
+	public function cetakcari($id) {
+		$status = 1;
+		$e = explode(".", $id);
+		$d = $e[1];
+		$dari = date($d."-1");
+		$s = $e[2];
+		$sampai = date($s."-t");
+		$karyawan_id = $e[0];
 		$this->db->select('*');
 		$this->db->from('nilai');
 		$this->db->join('sub', 'nilai.sub_id = sub.id_sub');
@@ -334,10 +397,27 @@ class Nilai extends CI_model {
 		$this->db->where('hasil.tgl <=', $sampai);
 		return $this->db->get()->result();
 	}
+	public function cetakcarihis($id) {
+		$status = 1;
+		$e = explode(".", $id);
+		$d = $e[1];
+		$dari = date($d."-1");
+		$s = $e[2];
+		$sampai = date($s."-t");
+		$karyawan_id = $e[0];
+		$this->db->select('*');
+		$this->db->from('hasil');
+		$this->db->join('karyawan', 'hasil.karyawan_id = karyawan.id_karyawan');
+		$this->db->order_by("hasil.tgl", "asc");
+		$this->db->where('hasil.karyawan_id', $karyawan_id);
+		$this->db->where('hasil.tgl >=', $dari);
+		$this->db->where('hasil.tgl <=', $sampai);
+		return $this->db->get()->result();
+	}
 	public function hasilbulan() {
 		date_default_timezone_set('Asia/Jakarta');
 		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
 		$date = date("Y-m", strtotime($d1));
 		$this->db->like('tgl', $date);
 		return $this->db->get('hasil')->result();
@@ -346,7 +426,7 @@ class Nilai extends CI_model {
 		date_default_timezone_set('Asia/Jakarta');
 		
 		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
 		$date = date("Y-m", strtotime($d1));
 		if($date >= date("Y-01-01") && $date <= date("Y-03-t")) {
 			$dari = date("Y-01-01");
@@ -370,7 +450,7 @@ class Nilai extends CI_model {
 		date_default_timezone_set('Asia/Jakarta');
 		
 		$d = date("Y-m-d");
-		$d1 = date ("Y-m-d", strtotime("-1 day", strtotime($d)));
+		$d1 = date ("Y-m-d", strtotime("-1 month", strtotime($d)));
 		$date = date("Y-m", strtotime($d1));
 		if($date >= date("Y-01-01") && $date <= date("Y-06-t")) {
 			$dari = date("Y-01-01");
@@ -382,5 +462,30 @@ class Nilai extends CI_model {
 		$this->db->where('tgl >=', $dari);
 		$this->db->where('tgl <=', $sampai);
 		return $this->db->get('hasil')->result();
+	}
+	public function perhari() {
+		$status = 1;
+		$tgl = $this->input->post('tgl');
+		$id = $this->input->post('karyawan');
+		$this->db->select('*');
+		$this->db->from('nilai');
+		//$this->db->join('karyawan', 'nilai.karyawan_id = nilai.id_karyawan');
+		$this->db->where('nilai.status', $status);
+		$this->db->where('nilai.karyawan_id', $id);
+		$this->db->like('tgl', $tgl);
+		return $this->db->get()->result();
+	}
+	public function perbulan() {
+		$status = 1;
+		$bulan = $this->input->post("bulan");
+		$tgl_pertama = date('Y-m-01', strtotime($bulan));
+		$tgl_terakhir = date('Y-m-t', strtotime($bulan));
+		$id = $this->input->post("karyawan");
+		
+		$this->db->where('status', $status);
+		$this->db->where('karyawan_id', $id);
+		$this->db->where('tgl >=', $tgl_pertama);
+		$this->db->where('tgl <=', $tgl_terakhir);
+		return $this->db->get('nilai')->result();
 	}
 }

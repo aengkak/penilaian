@@ -20,7 +20,6 @@
 </table>
 <script>
    $(document).ready(function() {
-                //datatables
    	$('#datatable').DataTable();
    });
 </script>

@@ -8,13 +8,13 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="page-title-box">
-                  <h4 class="page-title">Subkategori </h4>
+                  <h4 class="page-title">Nilai </h4>
                   <ol class="breadcrumb p-0 m-0">
                      <li>
                         <a href="#">Beranda</a>
                      </li>
                      <li class="active">
-                        Subkategori
+                        nilai
                      </li>
                   </ol>
                   <div class="clearfix"></div>
@@ -80,112 +80,9 @@
 </div>
 <!-- /.modal -->
 <script type="text/javascript">
-var table;
-var simpan;
-
-$(document).ready(function () {
-	//datatables
-	table = $('#datatable').DataTable({
-		//keys: true,
-		"processing": true, //Feature control the processing indicator.
-		"serverSide": true, //Feature control DataTables' server-side processing mode.
-		"order": [], //Initial no order.
-		// Load data for the table's content from an Ajax source
-		"ajax": {
-			"url": '<?php echo base_url('jsonsub '); ?>',
-			"type": "POST"
-		},
-		//Set column definition initialisation properties.
-		"columns": [{
-				"data": "sub"
-			},
-			{
-				"data": "jumlah"
-			},
-			{
-				"data": "nama"
-			},
-			{
-				"data": "action"
-			}
-		],
-
-	});
-	//TableManageButtons.init();
-});
-
-function tambah() {
-	simpan = 'tambah';
-	$('#form')[0].reset(); // reset form on modals
-	$('#myModal').modal({
-		backdrop: 'static',
-		keyboard: false
-	}, 'show'); // show bootstrap modal
-	$("#modalbody").load("modalsub/", function (data) {
-		$("#modalbody").html(data);
-	});
-}
-
-function ganti(id) {
-	simpan = 'update';
-	$('#form')[0].reset(); // reset form on modals
-	$('#myModal').modal({
-		backdrop: 'static',
-		keyboard: false
-	}, 'show'); // show bootstrap modal
-	$("#modalbody").load("<?php echo base_url();?>editsub/" + id, function (data) {
-		$("#modalbody").html(data);
-	});
-}
-$("#form").on('submit', (function (e) {
-	e.preventDefault();
-	var url;
-	if (simpan == 'tambah') {
-		url = "<?php echo base_url();?>addsub";
-	} else {
-		url = "<?php echo base_url();?>updatesub";
-	}
-	$.ajax({
-		url: url,
-		type: "POST",
-		data: new FormData(this),
-		contentType: false,
-		cache: false,
-		processData: false,
-		success: function (data) {
-			$('#myModal').modal('hide');
-			swal("Sukses!", "", "success")
-			table.ajax.reload();
-		},
-		error: function (jqXHR, textStatus, errorThrown) {
-			swal("Error", "", "error");
-		}
-	});
-	return false;
-}));
-
-function hapus(id) {
-	swal({
-		title: "Yakin Menghapus?",
-		text: "Data akan dihapus",
-		type: "error",
-		showCancelButton: true,
-		confirmButtonClass: 'btn-danger waves-effect waves-light',
-		confirmButtonText: "Ya",
-		closeOnConfirm: false
-	}, function () {
-		$.ajax({
-			url: "<?php echo site_url('deletesub')?>/" + id,
-			type: "POST",
-			dataType: "JSON",
-			success: function (data) {
-				table.ajax.reload();
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				swal("Error", "", "error");
-			}
-		});
-		swal("Sukses!", "", "success");
-	});
-}
+var table;var simpan;$(document).ready(function(){table=$('#datatable').DataTable({"processing":!0,"serverSide":!0,"order":[],"ajax":{"url":'<?php echo base_url('jsonsub '); ?>',"type":"POST"},"columns":[{"data":"sub"},{"data":"jumlah"},{"data":"nama"},{"data":"action"}],})});function tambah(){simpan='tambah';$('#form')[0].reset();$('#myModal').modal({backdrop:'static',keyboard:!1},'show');$("#modalbody").load("<?php echo base_url();?>modalsub/",function(data){$("#modalbody").html(data)})}
+function ganti(id){simpan='update';$('#form')[0].reset();$('#myModal').modal({backdrop:'static',keyboard:!1},'show');$("#modalbody").load("<?php echo base_url();?>editsub/"+id,function(data){$("#modalbody").html(data)})}
+$("#form").on('submit',(function(e){e.preventDefault();var url;if(simpan=='tambah'){url="<?php echo base_url();?>addsub"}else{url="<?php echo base_url();?>updatesub"}
+$.ajax({url:url,type:"POST",data:new FormData(this),contentType:!1,cache:!1,processData:!1,success:function(data){$('#myModal').modal('hide');swal("Sukses!","","success")
+table.ajax.reload()},error:function(jqXHR,textStatus,errorThrown){swal("Error","","error")}});return!1}));function hapus(id){swal({title:"Yakin Menghapus?",text:"Data akan dihapus",type:"error",showCancelButton:!0,confirmButtonClass:'btn-danger waves-effect waves-light',confirmButtonText:"Ya",closeOnConfirm:!1},function(){$.ajax({url:"<?php echo site_url('deletesub')?>/"+id,type:"POST",dataType:"JSON",success:function(data){table.ajax.reload()},error:function(jqXHR,textStatus,errorThrown){swal("Error","","error")}});swal("Sukses!","","success")})}
 </script>

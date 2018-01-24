@@ -97,6 +97,23 @@
    <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!-- sample modal content -->
+<div id="modalloading" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalpassLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+         <div class="modal-body" id="modalbody">
+            <div class="text-center">Loading<br>
+               <span class="fa fa-3x fa-spin fa-spinner"></span>
+            </div>
+         </div>
+      </div>
+      <!-- /.modal-content -->
+   </div>
+   <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <script>
             var resizefunc = [];
         </script>

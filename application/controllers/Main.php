@@ -14,6 +14,7 @@ class Main extends CI_Controller {
 		$this->load->model('Nilai');
 		$this->load->model('Divisi');
 		$this->load->model('Aktivitas');
+		$this->load->model('Surat');
 	}
 	/**
 	 * Index Page for this controller.
@@ -217,12 +218,12 @@ class Main extends CI_Controller {
 		$this->Akses->update();
 		echo json_encode(array("status" => TRUE));
 	}
-	public function subkategori() {
+	public function nilai() {
 		$akses_id = $this->session->userdata('akses_id');
 		$res1 = explode(',',$akses_id);
 		foreach ($res1 as $key => $value) {
 			$cek = $this->Akses->cek($value);
-			if (strtolower($cek->akses) == "subkategori") {
+			if (strtolower($cek->akses) == "nilai") {
 				$count = $cek->akses;
 			}
 		}
@@ -361,12 +362,12 @@ class Main extends CI_Controller {
 		$this->Divisi->update();
 		echo json_encode(array("status" => TRUE));
 	}
-	public function peraturan() {
+	public function penilaian() {
 		$akses_id = $this->session->userdata('akses_id');
 		$res1 = explode(',',$akses_id);
 		foreach ($res1 as $key => $value) {
 			$cek = $this->Akses->cek($value);
-			if (strtolower($cek->akses) == "peraturan") {
+			if (strtolower($cek->akses) == "penilaian") {
 				$count = $cek->akses;
 			}
 		}
@@ -427,14 +428,56 @@ class Main extends CI_Controller {
 		$bulan = $this->input->post("bulan");
 		$tgl_pertama = date('Y-m-01', strtotime($bulan));
 		$tgl_terakhir = date('Y-m-t', strtotime($bulan));
-		$d = array();
-
-		while (strtotime($tgl_pertama) <= strtotime($tgl_terakhir)) {
-			$d[] = $tgl_pertama;
-			$tgl_pertama = date("Y-m-d", strtotime("+1 day", strtotime($tgl_pertama)));
-		}
-		$data['bulan'] = $d;
+		$data['tgl'] = $bulan;
+		$data['nilai'] = $this->Nilai->perbulan();
+		$data['kategori'] = $this->Kategori->selectAll();
 		
+		$tglevent = array();
+		while (strtotime($tgl_pertama) <= strtotime($tgl_terakhir)) {
+			$tglevent[] = $tgl_pertama;
+			$tgl_pertama = date ("Y-m-d", strtotime("+1 day", strtotime($tgl_pertama)));
+		}
+		$arr = array();
+		foreach($tglevent as $keytgl => $value) {
+			foreach($data['nilai'] as $key) {
+				if($value == $key->tgl) {
+					if($key->sub_id == 0) {
+						$namasub = "Ok";
+						$label = "bg-success";
+					} else {
+						foreach($data['sub'] as $keysub) {
+							if($keysub->id_sub == $key->sub_id) {
+								$namasub = $keysub->sub;
+								$warna = $keysub->warna;
+								if($warna == "red") {
+									$label = "bg-danger";
+								} elseif($warna == "yellow") {
+									$label = "bg-warning";
+								} elseif($warna == "blue") {
+									$label = "bg-primary";
+								} elseif($warna == "black") {
+									$label = "inverse";
+								}
+							}
+						}
+					}
+					$arr[] = array('title' => $namasub, 'start' => $value, 'className' => $label);
+				}
+			}
+		}
+		$data['event'] = json_encode($arr);
+		$this->load->view('modal/nilai1', $data);
+	}
+	public function modalsetnilai() {
+		$data['sub'] = $this->Sub->selectAll();
+		$data['hariini'] = $this->input->post("tgl");
+		$id = $this->input->post("karyawan");
+		$data['karyawan'] = $this->Karyawan->edit($id);
+		$data['nilai'] = $this->Nilai->perhari();
+		$data['kategori'] = $this->Kategori->selectAll();
+		$bulan = date('Y-m', strtotime($this->input->post("tgl")));
+		$tgl_pertama = date('Y-m-01', strtotime($bulan));
+		$tgl_terakhir = date('Y-m-t', strtotime($bulan));
 		$d1 = array();
 		$awal = $data['karyawan']->masuk;
 		while (strtotime($awal) <= strtotime($tgl_terakhir)) {
@@ -442,10 +485,11 @@ class Main extends CI_Controller {
 			$awal = date ("Y-m-d", strtotime("+14 day", strtotime($awal)));
 		}
 		$data['tambahan'] = $d1;
-		
-		$data['nilai'] = $this->Nilai->cek();
-		$data['kategori'] = $this->Kategori->selectAll();
-		$this->load->view('modal/nilai', $data);
+		if($this->input->post('cek') == 0) {
+			$this->load->view('modal/setnilai', $data);
+		} elseif($this->input->post('cek') == 1) {
+			$this->load->view('modal/setnilai1', $data);
+		}
 	}
 	public function modalket($id) {
 		$pecah = explode(".", $id);
@@ -542,6 +586,7 @@ class Main extends CI_Controller {
 		$nilai = $this->Nilai->hasilbulan();
 		$rule = $this->Rule->selectAll();
 		$eksel['sub'] = $this->Sub->selectAll();
+		$em = $this->Surat->selectAll();
 		foreach ($karyawan as $key) {
 			
 			$now = 0;
@@ -551,13 +596,13 @@ class Main extends CI_Controller {
 				}
 			}
 			
-			$from_email = 'norok.event3@gmail.com'; // ganti dengan email kalian
+			$from_email = $em->email; // ganti dengan email kalian
 			$subject = 'Skor Bulanan';
 			$data['nama'] = $key->nama;
-			$data['skor'] = $now;
+			$data['skor'] = 100-$now;
 			$data['untuk'] = 'bulanan';
 			foreach($rule as $keyrule) {
-				if ($now >= $keyrule->dari && $now <= $keyrule->sampai) {
+				if (100-$now >= $keyrule->dari && 100-$now <= $keyrule->sampai) {
 					$warna = $keyrule->warna;
 					$catatan = $keyrule->note;
 					break;
@@ -566,7 +611,7 @@ class Main extends CI_Controller {
 			$data['warna'] = $warna;
 			$data['catatan'] = $catatan;
 			
-			$eksel['skor'] = $now;
+			$eksel['skor'] = 100-$now;
 			$eksel['warna'] = $warna;
 			$eksel['catatan'] = $catatan;
 			$eksel['nilai'] = $this->Nilai->bulanini($key->id_karyawan);
@@ -583,7 +628,7 @@ class Main extends CI_Controller {
 			$config['smtp_timeout'] = '7';
 			$config['smtp_port'] = '465'; // sesuaikan
 			$config['smtp_user'] = $from_email;
-			$config['smtp_pass'] = '30april2011'; // ganti dengan password email
+			$config['smtp_pass'] = $em->password; // ganti dengan password email
 			$config['mailtype'] = 'html';
 			$config['charset'] = 'iso-8859-1';
 			$config['wordwrap'] = TRUE;
@@ -608,10 +653,10 @@ class Main extends CI_Controller {
 	}
 	public function triwulan () {
 		$karyawan = $this->Karyawan->selectAll();
-		$nilai = $this->Nilai->tigabulan();
+		$nilai = $this->Nilai->tigabulanlalu();
 		$rule = $this->Rule->selectAll();
 		$eksel['sub'] = $this->Sub->selectAll();
-		
+		$em = $this->Surat->selectAll();
 		foreach ($karyawan as $key) {
 			$tri = 0;
 			foreach ($nilai as $keyt) {
@@ -620,7 +665,7 @@ class Main extends CI_Controller {
 				}
 			}
 			
-			$from_email = 'norok.event3@gmail.com'; // ganti dengan email kalian
+			$from_email = $em->email; // ganti dengan email kalian
 			$subject = 'Skor Triwulan';
 			$data['nama'] = $key->nama;
 			$data['skor'] = round($tri/3);
@@ -652,7 +697,7 @@ class Main extends CI_Controller {
 			$config['smtp_timeout'] = '7';
 			$config['smtp_port'] = '465'; // sesuaikan
 			$config['smtp_user'] = $from_email;
-			$config['smtp_pass'] = '30april2011'; // ganti dengan password email
+			$config['smtp_pass'] = $em->password; // ganti dengan password email
 			$config['mailtype'] = 'html';
 			$config['charset'] = 'iso-8859-1';
 			$config['wordwrap'] = TRUE;
@@ -676,9 +721,10 @@ class Main extends CI_Controller {
 	}
 	public function semester () {
 		$karyawan = $this->Karyawan->selectAll();
-		$nilai = $this->Nilai->enambulan();
+		$nilai = $this->Nilai->enambulanlalu();
 		$rule = $this->Rule->selectAll();
 		$eksel['sub'] = $this->Sub->selectAll();
+		$em = $this->Surat->selectAll();
 		foreach ($karyawan as $key) {
 			$tri = 0;
 			foreach ($nilai as $keyt) {
@@ -686,7 +732,7 @@ class Main extends CI_Controller {
 					$tri = $tri + $keyt->nilai;
 				}
 			}
-			$from_email = 'norok.event3@gmail.com'; // ganti dengan email kalian
+			$from_email = $em->email; // ganti dengan email kalian
 			$subject = 'Skor Semester';
 			$data['nama'] = $key->nama;
 			$data['skor'] = round($tri/6);
@@ -718,7 +764,7 @@ class Main extends CI_Controller {
 			$config['smtp_timeout'] = '7';
 			$config['smtp_port'] = '465'; // sesuaikan
 			$config['smtp_user'] = $from_email;
-			$config['smtp_pass'] = '30april2011'; // ganti dengan password email
+			$config['smtp_pass'] = $em->password; // ganti dengan password email
 			$config['mailtype'] = 'html';
 			$config['charset'] = 'iso-8859-1';
 			$config['wordwrap'] = TRUE;
@@ -756,10 +802,10 @@ class Main extends CI_Controller {
 		$data['nilai'] = $this->Nilai->carihis();
 		$this->load->view('modal/carihasil', $data);
 	}
-	public function cetakpdf() {
-		$id = $this->input->post('karyawan_id');
-		$data['karyawan'] = $this->Karyawan->edit($id);
-		$data['nilai'] = $this->Nilai->cari();
+	public function cetakpdf($id) {
+		$e = explode(".", $id);
+		$data['karyawan'] = $this->Karyawan->edit($e[0]);
+		$data['nilai'] = $this->Nilai->cetakcari($id);
 			// Load all views as normal
 			$this->load->view('pdf', $data);
 			// Get output html
@@ -771,10 +817,10 @@ class Main extends CI_Controller {
 			$this->dompdf->render();
 			$this->dompdf->stream($data['karyawan']->nama.".pdf");
 	}
-	public function cetakhis() {
-		$id = $this->input->post('karyawan_id');
-		$data['karyawan'] = $this->Karyawan->edit($id);
-		$data['nilai'] = $this->Nilai->carihis();
+	public function cetakhis($id) {
+		$e = explode(".", $id);
+		$data['karyawan'] = $this->Karyawan->edit($e[0]);
+		$data['nilai'] = $this->Nilai->cetakcarihis($id);
 			// Load all views as normal
 			$this->load->view('pdfhis', $data);
 			// Get output html
@@ -817,13 +863,20 @@ class Main extends CI_Controller {
 		}
 	}
 	public function tes() {
-		$id_karyawan = 1;
-		$eksel['skor'] = "90";
-			$eksel['warna'] = "green";
-			$eksel['catatan'] = "Ok";
-		$eksel['sub'] = $this->Sub->selectAll();
-		$eksel['nilai'] = $this->Nilai->bulanini($id_karyawan);
-		$eksel['karyawan'] = $this->Karyawan->edit($id_karyawan);
-		$this->load->view('modal/excel', $eksel);
+		$date = "2018-01-20";
+		$a = date('Y-m', strtotime($date));
+		print_r($a);
+	}
+	public function email() {
+		$data['email'] = $this->Surat->selectAll();
+		$this->load->view('email', $data);
+	}
+	public function editemail($id) {
+		$data['email'] = $this->Surat->edit($id);
+		$this->load->view('modal/email', $data);
+	}
+	public function updateemail() {
+		$this->Surat->update();
+		echo json_encode(array("status" => TRUE));
 	}
 }

@@ -97,6 +97,7 @@ class Karyawan extends CI_model {
 				$this->datatables->or_like('karyawan.divisi_id', $value);
 			}
 		$no++; }
+		$this->db->select('karyawan.status AS status_karyawan');
 		$this->db->order_by('nama', "asc");
     return $this->db->get()->result();
 	}

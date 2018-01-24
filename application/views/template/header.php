@@ -37,6 +37,10 @@
       <link href="<?php echo base_url();?>assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
       <!-- Sweet Alert -->
       <link href="<?php echo base_url();?>assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
+	  
+	  <!--calendar css-->
+        <link href="<?php echo base_url();?>assets/plugins/fullcalendar/css/fullcalendar.min.css" rel="stylesheet" />
+		
       <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
       <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
       <!--[if lt IE 9]>
@@ -68,6 +72,10 @@
       <script src="<?php echo base_url();?>assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
       <script src="<?php echo base_url();?>assets/pages/jquery.sweet-alert.init.js"></script>
       <script src="<?php echo base_url();?>assets/js/modernizr.min.js"></script>
+	  <!-- BEGIN PAGE SCRIPTS -->
+        <script src="<?php echo base_url();?>assets/plugins/moment/moment.js"></script>
+        <script src='<?php echo base_url();?>assets/plugins/fullcalendar/js/fullcalendar.min.js'></script>
+        <!--<script src="<?php echo base_url();?>assets/pages/jquery.fullcalendar.js"></script>-->
       <script>
          function hanyaAngka(evt) {
            var charCode = (evt.which) ? evt.which : event.keyCode

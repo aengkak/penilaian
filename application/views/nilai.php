@@ -84,7 +84,7 @@
                               	$warna3 = $keyrule->warna;
                               	break;
                               } else {
-                              	$warna3 = "green";
+                              	$warna3 = "black";
                               }
                               } 
                               if($warna3 == "yellow") {
@@ -107,7 +107,7 @@
                               	$warna = $keyrule->warna;
                               	break;
                               } else {
-                              	$warna = "green";
+                              	$warna = "black";
                               }
                               } 
                               if($warna == "yellow") {
@@ -131,7 +131,7 @@
                               	$warna1 = $keyrule->warna;
                               	break;
                               } else {
-                              	$warna1 = "green";
+                              	$warna1 = "black";
                               }
                               } 
                               if($warna1 == "yellow") {
